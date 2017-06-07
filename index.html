@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Vue学习</title>
+</head>
+<body>
+<div id="app">
+    <!--取值表达式-->
+    {{msg}}
+</div>
+<script src="node_modules/vue/dist/vue.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    // 一段落json+一块html即可
+    //引用vue，可以提供一个vue的构造函数
+    //用之前先声明
+    let vm=new Vue({
+        el:'#app',//el querySelector;
+        data:{msg:'hello world !'}
+    });
+    //vm可以代理data属性
+    console.log(vm.name)
+</script>
+</body>
+</html>
+

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <caption class="h3 text-danger text-center">购物列表</caption>
+                <tr>
+                    <th>商品名称</th>
+                    <th>商品价格</th>
+                    <th>商品数量</th>
+                    <th>操作</th>
+                </tr>
+                <tr v-for="product in products">
+                    <td>{{product.name}}</td>
+                    <td>{{product.price}}</td>
+                    <td><input type="text" v-model="product.count"></td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @click="del(product)">删除</button>
+                    </td>
+                </tr>
+                <tr>
+                    <!--{{sum()}}性能低 和sum没关系也会重新执行-->
+                    <td colspan="4">总价:{{sum()}}</td>
+                </tr>
+            </table>
+            <form>
+                <div class="form-group">
+                    <label for="productName" class="control-label">商品名称</label>
+                    <input type="text" id="productName" class="form-control" placeholder="请输入商品名称"
+                           v-model="productName" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">商品价格</label>
+                    <input type="text" id="productPrice" class="form-control" placeholder="请输入商品价格"
+                           v-model="productPrice" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" @click="add" type="button">添加</button>
+                    <button class="btn btn-warning" @click="reset" type="button">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: ".container",
+        data: {
+            //将数据渲染到页面上
+            products: [
+                {name: '狗', price: '300', count: 2},
+                {name: '猫', price: '700', count: 1},
+                {name: '猪', price: '2000', count: 1}
+            ],
+            productName: '',
+            productPrice: ''
+        },
+        methods: {
+            //点击删除按钮，点击时将这条数据传递过来，做过滤
+            del(product){
+                //返回的是一个新数组
+                this.products = this.products.filter(function (item) {
+                    return item !== product
+                })
+            },
+            //函数{{sum()}}求价格和数量的总和 reduce
+            sum(){
+                return this.products.reduce(function (prev, next) {
+                    return prev + next.price * next.count;
+                }, 0);
+            },
+            add(){
+                let product = {
+                    name: this.productName,
+                    price: this.productPrice,
+                    count: 1
+                };
+                this.products.push(product);
+                this.reset();
+            },
+            reset(){
+                this.productName=this.productPrice=''
+            }
+        }
+    })
+</script>
+</body>
+</html>
